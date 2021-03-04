@@ -24,7 +24,7 @@
  */
 package net.runelite.deob.deobfuscators.transformers.buffer;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Methods injected into runescape-client's Buffer
@@ -112,14 +112,7 @@ public class RuneliteBuffer
 		}
 
 		offset += length;
-		try
-		{
-			return new String(payload, offset - length, length, "UTF-8");
-		}
-		catch (UnsupportedEncodingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		return new String(payload, offset - length, length, StandardCharsets.UTF_8);
 	}
 
 	public void runeliteWriteByte(byte b)
@@ -157,14 +150,7 @@ public class RuneliteBuffer
 	{
 		byte[] bytes;
 
-		try
-		{
-			bytes = s.getBytes("UTF-8");
-		}
-		catch (UnsupportedEncodingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		bytes = s.getBytes(StandardCharsets.UTF_8);
 
 		runeliteWriteShort((short) bytes.length);
 		for (byte b : bytes)
